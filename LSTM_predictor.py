@@ -286,24 +286,15 @@ class LSTM_predictor:
 
 if __name__ == "__main__":
 
-    pred = LSTM_predictor("mean_absolute_percentage_error", read_csv("AVGpower_1_floor.csv"), ["AvgT", "Hour", "AvgP"],
+    pred = LSTM_predictor("mean_absolute_percentage_error", read_csv("data-set/AVGpower_1_floor.csv"),
+                          ["AvgT", "Hour", "AvgP"],
                           "AvgP_next_value_1", filename="", steps_back=10, hidden_layers_nr=4,
                           lstm_x_hidden_layer=[5, 5, 5, 5])
     es = EarlyStopping(patience=4)
-    pred.train_model(epochs=500, batch=20, callBacks=[])
+    pred.train_model(epochs=500, batch=20, callBacks=[es])
+    # assuming know temperature:
+    pred.chain_testing(chain_steps=5, column_to_overwirte="AvgP", mape=True)
 
-    #file = open("Chain_LSTM_floor1.txt", "w")
-    #
-    #for i in range(1, 16):
-    #    print("iteration: " + str(i))
-    #    a, b = pred.double_chain_testing(chain_steps=i, column_to_overwirte="AvgP", column_to_overwrite_2="AvgT",
-    #                                 model_2_inputs=["AvgT", "Hour"], model_2_output="AvgT_next_value_1", mape=True,
-    #                                 filename="")
-    #    file.write(str(b))
-    #    file.write(",")
-    #
-    #file.close()
-    ## pred.basic_testing()
 
 
 

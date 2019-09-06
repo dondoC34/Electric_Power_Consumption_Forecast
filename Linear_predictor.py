@@ -180,24 +180,27 @@ def k_fold_Xvalidation(filename, k, mape=False):
 
 if __name__ == '__main__':
 
-    frame = pd.read_csv("AVGpower_3_floor.csv")
+    frame = pd.read_csv("data-set/AVGpower_3_floor.csv")
     dp = DataProcessor(frame)
     sets = dp.compute_train_test_set([80, 20])
     train_frame = sets[0]
     test_frame = sets[1]
     predictor = Linear_predictor(train_frame, test_frame)
-    predictor.train_model(filename="", poly_degree=4, inputs=["Hour", "AvgT", "AvgP", "Month % 1", "Month % 2", "Month % 3", "Month % 4", "Month % 5", "Month % 6", "Month % 7", "Month % 8", "Month % 9", "Month % 10", "Month % 11", "Month % 12"], output="AvgP_next_value_1")
-    predictor.basic_testing(mape=True, poly_degree=4)
-    # file = open("Chain_Linear_2_Lasso_floor1.txt", "w")
-    # for i in range(1, 16):
-    #     print("iteration: " + str(i))
-    #     a, b = predictor.double_chain_testing(chain_steps=i, column_to_overwrite_1="AvgP", column_to_overwrite_2="AvgT",
-    #                                    model_2_inputs=["Day", "Hour", "Minutes", "Month % 1",
-    #                                    "Month % 2", "Month % 3", "Month % 4", "Month % 5", "Month % 6", "Month % 7",
-    #                                    "Month % 8", "Month % 9", "Month % 10", "Month % 11", "Month % 12", "AvgT"],
-    #                                   model_2_output="AvgT_next_value_1", mape=True, poly_degree_1=1, poly_degree_2=1,
-    #                                           filename_2="")
-    #     file.write(str(b))
-    #     file.write(",")
-    #
-    # file.close()
+    predictor.train_model(filename="", poly_degree=4, inputs=["Hour", "AvgT", "AvgP", "Month % 1", "Month % 2",
+                                                              "Month % 3", "Month % 4", "Month % 5", "Month % 6",
+                                                              "Month % 7", "Month % 8", "Month % 9", "Month % 10",
+                                                              "Month % 11", "Month % 12"], output="AvgP_next_value_1")
+    file = open("Chain_Linear_2_Lasso_floor1.txt", "w")
+
+    for i in range(1, 16):
+        print("iteration: " + str(i))
+        a, b = predictor.double_chain_testing(chain_steps=i, column_to_overwrite_1="AvgP", column_to_overwrite_2="AvgT",
+                                       model_2_inputs=["Day", "Hour", "Minutes", "Month % 1",
+                                       "Month % 2", "Month % 3", "Month % 4", "Month % 5", "Month % 6", "Month % 7",
+                                       "Month % 8", "Month % 9", "Month % 10", "Month % 11", "Month % 12", "AvgT"],
+                                       model_2_output="AvgT_next_value_1", mape=True, poly_degree_1=1, poly_degree_2=1,
+                                       filename_2="")
+        file.write(str(b))
+        file.write(",")
+
+    file.close()

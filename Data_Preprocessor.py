@@ -297,7 +297,7 @@ class DataProcessor:
 
 if __name__ == '__main__':
     result = []
-    frame = pd.read_csv("AVGpower_1_floor.csv")
+    frame = pd.read_csv("data-set/AVGpower_1_floor.csv")
 
     dp = DataProcessor(frame)
     dp.add_days_of_the_week()

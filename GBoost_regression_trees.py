@@ -183,27 +183,18 @@ def k_fold_Xvalidation(filename, k, mape=False):
 
 if __name__ == "__main__":
 
-    frame = pd.read_csv("AVGpower_3_floor.csv")
+    frame = pd.read_csv("data-set/AVGpower_3_floor.csv")
     dp = DataProcessor(frame)
     sets = dp.compute_train_test_set([80, 20])
     train_frame = sets[0]
     test_frame = sets[1]
     predictor = GBoost_regression_trees_predictor(train_frame, test_frame, verbose_model=1, num_of_trees=50)
-    predictor.train_model(filename="", inputs=["Hour", "AvgT", "AvgP", "Month % 1", "Month % 2", "Month % 3", "Month % 4", "Month % 5", "Month % 6", "Month % 7", "Month % 8", "Month % 9", "Month % 10", "Month % 11", "Month % 12"], output="AvgP_next_value_1")
+    predictor.train_model(filename="saved-models/GBoost100.joblib",
+                          inputs=["Hour", "AvgT", "AvgP", "Month % 1", "Month % 2", "Month % 3", "Month % 4",
+                                  "Month % 5", "Month % 6", "Month % 7", "Month % 8", "Month % 9",
+                                  "Month % 10", "Month % 11", "Month % 12"], output="AvgP_next_value_1")
     predictor.basic_testing(mape=True)
-    # predictor.save_model("GBoost_100.joblib")
 
-    # file = open("Chain_GBoost_floor1.txt", "w")
-    # for i in range(1, 16):
-    #     a, b = predictor.double_chain_testing(chain_steps=i, column_to_overwrite_1="AvgP", column_to_overwrite_2="AvgT",
-    #                                      model_2_inputs=["Day", "Hour", "Minutes", "Month % 1",
-    #                                      "Month % 2", "Month % 3", "Month % 4", "Month % 5", "Month % 6", "Month % 7",
-    #                                      "Month % 8", "Month % 9", "Month % 10", "Month % 11", "Month % 12", "AvgT"],
-    #                                      model_2_output="AvgT_next_value_1", mape=True, filename_2="")
-    #     file.write(str(b))
-    #     file.write(",")
-    #
-    # file.close()
 
 
 
